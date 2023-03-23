@@ -3,6 +3,7 @@ import { styled, useStyletron } from 'baseui';
 import { Input, SIZE } from 'baseui/input';
 import { Combobox } from 'baseui/combobox';
 import { Radio } from 'baseui/radio';
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
 import { Formik, Form, ErrorMessage, Field, useFormik } from 'formik';
 import * as Yup from "yup";
 import {
@@ -10,8 +11,13 @@ import {
     ParagraphMedium,
 } from 'baseui/typography';
 import axios from 'axios';
+import { API_URL } from '../admin/DashboardContent';
 const Learner = () => {
+    const navigate = useNavigate();
+    const location = useLocation()
+    let from = location.state?.from?.pathname || "/login";
     const [rider, setRider] = React.useState(true)
+    const [message, setMessage] = React.useState('')
     const [picture, setPicture] = React.useState({
         profile: '',
         nid: '',
@@ -60,10 +66,14 @@ const Learner = () => {
             formData.append('phone', values.phone);
             formData.append('vehicleType', values.vehicleType);
             formData.append('password', values.password);
+            formData.append('userType', 'learner');
 
-            axios.post('http://localhost:5000/api/register', formData)
+            axios.post(`${API_URL}api/register`, formData)
                 .then((res) => {
-                    console.log(res)
+                    setMessage(res.data)
+                    setTimeout(() => {
+                        navigate(from, { replace: true });
+                      }, 1000);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -104,6 +114,11 @@ const Learner = () => {
                     justifyContent: 'center',
                     textAlign: 'center'
                 })}>
+                    {
+                        message && (
+                            <div className='p-2 border bg-success text-white'><h6>{message}</h6></div>
+                        )
+                    }
                     <LabelLarge>Sign up as learner</LabelLarge>
 
 
@@ -172,7 +187,7 @@ const Learner = () => {
                                             <span>{formik.errors.phone}</span>
                                         ) : null}
                                     </div>
-                               
+
                                     <div className='col-md-12'>
                                         <label for="formFile" class="form-label">Upload NID Picture</label>
                                         <input class="form-control" name='nidPicture' type="file" id="formFile"
@@ -196,7 +211,7 @@ const Learner = () => {
 
 
                                 </div>
-                  
+
                                 <div className='row mt-5 mb-5'>
                                     <h6>Login Security</h6><hr />
                                     <div class="col-md-6">

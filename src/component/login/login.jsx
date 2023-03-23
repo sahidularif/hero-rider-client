@@ -30,6 +30,7 @@ const Login = () => {
             password: Yup.string().required("Password is required"),
         }),
         onSubmit: values => {
+            console.log('log')
             login(values)
                 .then((res) => {
                     console.log(res)

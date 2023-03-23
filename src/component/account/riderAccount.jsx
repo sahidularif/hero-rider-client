@@ -8,6 +8,7 @@ import {
     ParagraphMedium,
 } from 'baseui/typography';
 import axios from 'axios';
+import { API_URL } from '../admin/DashboardContent';
 const Rider = () => {
     const navigate = useNavigate();
     const location = useLocation()
@@ -67,8 +68,9 @@ const Rider = () => {
             formData.append('carModel', values.carModel);
             formData.append('namePalate', values.namePalate);
             formData.append('password', values.password);
+            formData.append('userType', 'rider');
 
-            axios.post('http://localhost:5000/api/register', formData)
+            axios.post(`${API_URL}api/register`, formData)
                 .then((res) => {
                     console.log(res.data)
                     setMessage(res.data)

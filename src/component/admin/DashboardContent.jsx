@@ -18,9 +18,12 @@ import Data from './Data';
 import Pagination from '../Pagination/pagination';
 import Search from '../Search/search';
 import axios from 'axios';
+import { useAuth } from '../../auth/auth';
+import { isAuthenticated } from '../../auth/authService';
 const BASE_URL = `http://localhost:4004/api/allUser`;
-const API_URL = `https://light-sweatsuit-mite.cyclic.app/`
+export const API_URL = `https://light-sweatsuit-mite.cyclic.app/`
 const DashboardContent = () => {
+
     const [isOpen, setIsOpen] = useState(false);
     const [value, setValue] = useState("");
     const [css] = useStyletron();
@@ -37,7 +40,7 @@ const DashboardContent = () => {
     useEffect(() => {
         const getAllUser = async () => {
             try {
-                const url = `${API_URL}?page=${page}&limit=${limit}&search=${search}&renge=${value}`;
+                const url = `${API_URL}api/allUser?page=${page}&limit=${limit}&search=${search}&renge=${value}`;
                 const res = await axios.get(url);
                 console.log(res)
                 let users = res.data.user.map(user => {
@@ -92,10 +95,6 @@ const DashboardContent = () => {
                 // width: '20%'
             })}>
 
-                {/* <Filter size='2rem' className={css({
-                        marginRight: '0.3rem',
-                    })} /> */}
-                {/* <LabelLarge>Filter by age</LabelLarge> */}
 
                 <React.Fragment>
                     <Button
@@ -148,12 +147,11 @@ const DashboardContent = () => {
         </div>
 
         <div style={{ height: 'auto', width: '100%' }}>
-            {/* rows={leads.map(r => ({ id: r[0], data: r }))} */}
             <Data items={rows} />
             <Pagination
                 page={page}
-                limit={10}
-                total={50}
+                limit={rows.limit ? rows.limit : 0}
+                total={rows.total ? rows.total : 0}
                 setPage={(page) => setPage(page)}
             />
         </div>

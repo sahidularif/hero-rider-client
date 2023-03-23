@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const login = async (user) => {
-	const response = await axios.post('http://localhost:5000/api/login', {
+	const response = await axios.post('https://light-sweatsuit-mite.cyclic.app/api/login', {
 		email: user.email,
 		password: user.password
 	});
