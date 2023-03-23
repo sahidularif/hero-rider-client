@@ -37,7 +37,7 @@ const DashboardContent = () => {
     useEffect(() => {
         const getAllUser = async () => {
             try {
-                const url = `${BASE_URL}?page=${page}&limit=${limit}&search=${search}&renge=${value}`;
+                const url = `${API_URL}?page=${page}&limit=${limit}&search=${search}&renge=${value}`;
                 const res = await axios.get(url);
                 console.log(res)
                 let users = res.data.user.map(user => {
